@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbfaff;
+  --foreground: #171717;
+  --primary: #3900e8;
+  --primary-hover: #2e00ba;
+  --primary-active: #2e00ba;
+  --on-primary: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #f1ecff;
+  --text-primary: #171717;
+  --text-secondary: #5c5c5c;
+  --text-disabled: #9e9e9e;
+  --outline: #e0e0e0;
+  --outline-strong: #bdbdbd;
+  --cyan: #d5ff6b;
+  --skyblue: #9cfcff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-on-primary: var(--on-primary);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-disabled: var(--text-disabled);
+  --color-outline: var(--outline);
+  --color-outline-strong: var(--outline-strong);
+  --color-cyan: var(--cyan);
+  --color-skyblue: var(--skyblue);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0d0d0e;
+    --foreground: #ececec;
+    --primary: #6e4fe0;
+    --primary-hover: #9782ff;
+    --primary-active: #6e4fe0;
+    --on-primary: #ffffff;
+    --surface: #131b33;
+    --surface-alt: #1b2540;
+    --text-primary: #ececec;
+    --text-secondary: #a3a3a3;
+    --text-disabled: #6b6b6b;
+    --outline: #333333;
+    --outline-strong: #4d4d4d;
+    --cyan: #d5ff6b;
+    --skyblue: #9cfcff;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
