@@ -11,11 +11,19 @@
   --primary-active: #2e00ba;
   --on-primary: #ffffff;
 
+  /* Secondary Button Colors */
+  --secondary: #f1ecff;
+  --secondary-hover: #e6dcff;
+  --secondary-active: #dccdff;
+  --on-secondary: #3900e8;
+
   /* Surfaces & Backgrounds */
   --background: #fbfaff;
   --foreground: #171717;
   --surface: #ffffff;
   --surface-alt: #f1ecff;
+  --surface-disabled: #f0f0f2;
+  --ghost-hover: rgba(57, 0, 232, 0.08);
 
   /* Typography Colors */
   --text-primary: #171717;
@@ -93,10 +101,17 @@
   --color-primary-active: var(--primary-active);
   --color-on-primary: var(--on-primary);
 
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-active: var(--secondary-active);
+  --color-on-secondary: var(--on-secondary);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-alt: var(--surface-alt);
+  --color-surface-disabled: var(--surface-disabled);
+  --color-ghost-hover: var(--ghost-hover);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -171,10 +186,17 @@
     --primary-active: #6e4fe0;
     --on-primary: #ffffff;
 
+    --secondary: #1f2438;
+    --secondary-hover: #29304a;
+    --secondary-active: #333b5c;
+    --on-secondary: #c4b5fd;
+
     --background: #0d0d0e;
     --foreground: #ececec;
     --surface: #131b33;
     --surface-alt: #1b2540;
+    --surface-disabled: #1e1e23;
+    --ghost-hover: rgba(151, 130, 255, 0.12);
 
     --text-primary: #ececec;
     --text-secondary: #a3a3a3;
@@ -194,10 +216,17 @@
   --primary-active: #6e4fe0;
   --on-primary: #ffffff;
 
+  --secondary: #1f2438;
+  --secondary-hover: #29304a;
+  --secondary-active: #333b5c;
+  --on-secondary: #c4b5fd;
+
   --background: #0d0d0e;
   --foreground: #ececec;
   --surface: #131b33;
   --surface-alt: #1b2540;
+  --surface-disabled: #1e1e23;
+  --ghost-hover: rgba(151, 130, 255, 0.12);
 
   --text-primary: #ececec;
   --text-secondary: #a3a3a3;
