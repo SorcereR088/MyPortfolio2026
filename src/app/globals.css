@@ -1,53 +1,55 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   1. DESIGN TOKENS (LIGHT THEME / DEFAULT)
+   1. DESIGN TOKENS — DARK THEME (PERMANENT DEFAULT)
+   Portfolio is dark-only. Dark tokens live in :root.
+   Light tokens are kept in .light for future toggle support — do not remove.
    ========================================================================== */
 
 :root {
-  /* Brand & Interactive Colors */
-  --primary: #3900e8;
-  --primary-hover: #2e00ba;
-  --primary-active: #2e00ba;
-  --on-primary: #ffffff;
+  /* ── Primary Button: solid white on dark ── */
+  --primary: #ffffff;
+  --primary-hover: #e8e8e8;
+  --primary-active: #d1d1d1;
+  --on-primary: #0d0d0e;
 
-  /* Secondary Button Colors */
-  --secondary: #f1ecff;
-  --secondary-hover: #e6dcff;
-  --secondary-active: #dccdff;
-  --on-secondary: #3900e8;
+  /* ── Secondary Button: low-opacity white surface ── */
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-hover: rgba(255, 255, 255, 0.14);
+  --secondary-active: rgba(255, 255, 255, 0.18);
+  --on-secondary: #ffffff;
 
-  /* Surfaces & Backgrounds */
-  --background: #fbfaff;
-  --foreground: #171717;
-  --surface: #ffffff;
-  --surface-alt: #f1ecff;
-  --surface-disabled: #f0f0f2;
-  --ghost-hover: rgba(57, 0, 232, 0.08);
+  /* ── Surfaces & Backgrounds ── */
+  --background: #0d0d0e;
+  --foreground: #ececec;
+  --surface: #131313;
+  --surface-alt: #1a1a1a;
+  --surface-disabled: #1e1e23;
+  --ghost-hover: rgba(255, 255, 255, 0.06);
 
-  /* Typography Colors */
-  --text-primary: #171717;
-  --text-secondary: #5c5c5c;
-  --text-disabled: #9e9e9e;
+  /* ── Typography ── */
+  --text-primary: #ececec;
+  --text-secondary: #a3a3a3;
+  --text-disabled: #6b6b6b;
 
-  /* Outlines & Borders */
-  --outline: #e0e0e0;
-  --outline-strong: #bdbdbd;
+  /* ── Outlines & Borders ── */
+  --outline: #2a2a2a;
+  --outline-strong: #3d3d3d;
 
-  /* Accent Colors */
+  /* ── Accent Colors ── */
   --cyan: #d5ff6b;
   --skyblue: #9cfcff;
 
-  /* Font Families */
+  /* ── Font Families ── */
   --font-family-primary: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-family-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Typography Scale: Title */
+  /* ── Typography Scale: Title ── */
   --title-1-font-size: 72px;
   --title-1-line-height: 88px;
   --title-1-letter-spacing: -1.5px;
 
-  /* Typography Scale: Headings */
+  /* ── Typography Scale: Headings ── */
   --heading-h1-font-size: 56px;
   --heading-h1-line-height: 68px;
   --heading-h1-letter-spacing: -0.5px;
@@ -72,7 +74,7 @@
   --heading-h6-line-height: 24px;
   --heading-h6-letter-spacing: 0;
 
-  /* Typography Scale: Body */
+  /* ── Typography Scale: Body ── */
   --body-1-font-size: 18px;
   --body-1-line-height: 28px;
   --body-1-letter-spacing: -0.5px;
@@ -128,7 +130,7 @@
   --font-sans: var(--font-family-primary);
   --font-mono: var(--font-family-mono);
 
-  /* Typography Utilities (Size, Line Height & Letter Spacing) */
+  /* Typography Utilities */
   --text-title-1: var(--title-1-font-size);
   --text-title-1--line-height: var(--title-1-line-height);
   --text-title-1--letter-spacing: var(--title-1-letter-spacing);
@@ -175,68 +177,37 @@
 }
 
 /* ==========================================================================
-   3. DARK THEME TOKENS
+   3. LIGHT THEME TOKENS (future toggle — kept for later use)
+   Apply by adding class="light" to <html>. Do not delete.
    ========================================================================== */
 
-/* Supports both system dark mode (prefers-color-scheme) and manual toggles (.dark) */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --primary: #6e4fe0;
-    --primary-hover: #9782ff;
-    --primary-active: #6e4fe0;
-    --on-primary: #ffffff;
-
-    --secondary: #1f2438;
-    --secondary-hover: #29304a;
-    --secondary-active: #333b5c;
-    --on-secondary: #c4b5fd;
-
-    --background: #0d0d0e;
-    --foreground: #ececec;
-    --surface: #131b33;
-    --surface-alt: #1b2540;
-    --surface-disabled: #1e1e23;
-    --ghost-hover: rgba(151, 130, 255, 0.12);
-
-    --text-primary: #ececec;
-    --text-secondary: #a3a3a3;
-    --text-disabled: #6b6b6b;
-
-    --outline: #333333;
-    --outline-strong: #4d4d4d;
-
-    --cyan: #d5ff6b;
-    --skyblue: #9cfcff;
-  }
-}
-
-.dark {
-  --primary: #6e4fe0;
-  --primary-hover: #9782ff;
-  --primary-active: #6e4fe0;
+.light {
+  --primary: #0d0d0e;
+  --primary-hover: #2a2a2a;
+  --primary-active: #3d3d3d;
   --on-primary: #ffffff;
 
-  --secondary: #1f2438;
-  --secondary-hover: #29304a;
-  --secondary-active: #333b5c;
-  --on-secondary: #c4b5fd;
+  --secondary: rgba(0, 0, 0, 0.06);
+  --secondary-hover: rgba(0, 0, 0, 0.10);
+  --secondary-active: rgba(0, 0, 0, 0.14);
+  --on-secondary: #0d0d0e;
 
-  --background: #0d0d0e;
-  --foreground: #ececec;
-  --surface: #131b33;
-  --surface-alt: #1b2540;
-  --surface-disabled: #1e1e23;
-  --ghost-hover: rgba(151, 130, 255, 0.12);
+  --background: #fbfaff;
+  --foreground: #171717;
+  --surface: #ffffff;
+  --surface-alt: #f4f4f5;
+  --surface-disabled: #f0f0f2;
+  --ghost-hover: rgba(0, 0, 0, 0.05);
 
-  --text-primary: #ececec;
-  --text-secondary: #a3a3a3;
-  --text-disabled: #6b6b6b;
+  --text-primary: #171717;
+  --text-secondary: #5c5c5c;
+  --text-disabled: #9e9e9e;
 
-  --outline: #333333;
-  --outline-strong: #4d4d4d;
+  --outline: #e0e0e0;
+  --outline-strong: #bdbdbd;
 
-  --cyan: #d5ff6b;
-  --skyblue: #9cfcff;
+  --cyan: #6b9900;
+  --skyblue: #0094a3;
 }
 
 /* ==========================================================================
@@ -248,4 +219,3 @@ body {
   color: var(--foreground);
   font-family: var(--font-family-primary);
 }
-
