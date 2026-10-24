@@ -25,6 +25,7 @@
   --surface: #131313;
   --surface-alt: #1a1a1a;
   --surface-disabled: #1e1e23;
+  --highlight: #85FFA4;
   --ghost-hover: rgba(255, 255, 255, 0.06);
 
   /* ── Typography ── */
@@ -198,6 +199,7 @@
   --surface-alt: #f4f4f5;
   --surface-disabled: #f0f0f2;
   --ghost-hover: rgba(0, 0, 0, 0.05);
+  --highlight: #85FFA4;
 
   --text-primary: #171717;
   --text-secondary: #5c5c5c;
