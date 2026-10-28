@@ -1,126 +1,134 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { X } from "@phosphor-icons/react";
+import { usePathname } from "next/navigation";
+import { useLenis } from "lenis/react";
+import { List, X } from "@phosphor-icons/react";
+import { navLinks } from "@/constants/navLinks";
+import { useContactDrawer } from "./ContactDrawerProvider";
 
-interface NavLink {
-  href: string;
-  label: string;
-}
+const focusRing =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--highlight)]";
 
-interface MobileMenuProps {
-  id: string;
-  isOpen: boolean;
-  onClose: () => void;
-  navLinks: NavLink[];
-  currentPath: string;
-}
+export default function MobileMenu() {
+  // Store the pathname the menu was opened on (null = closed).
+  // If the route changes, the menu is treated as closed automatically.
+  const [openedOn, setOpenedOn] = useState<string | null>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
+  const lenis = useLenis();
+  const { open: openContact } = useContactDrawer();
 
-export function MobileMenu({ id, isOpen, onClose, navLinks, currentPath }: MobileMenuProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const isOpen = openedOn === pathname;
+  const close = useCallback(() => setOpenedOn(null), []);
 
-  // Close on Escape
+  // Lock scroll while open
+  useEffect(() => {
+    if (!isOpen) return;
+    lenis?.stop();
+    return () => lenis?.start();
+  }, [isOpen, lenis]);
+
+  // Close on Escape and return focus to the toggle
   useEffect(() => {
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        close();
+        toggleRef.current?.focus();
+      }
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, close]);
 
-  // Focus trap & body scroll lock using `inert` on sibling content
+  // Close when resizing up to desktop (setState runs inside a callback, which is fine)
   useEffect(() => {
-    const body = document.body;
-    if (isOpen) {
-      // Lock body scroll
-      body.style.overflow = "hidden";
-      // Move focus to close button
-      closeBtnRef.current?.focus();
-      // Mark the main document content as inert so keyboard can't reach it
-      document
-        .querySelectorAll<HTMLElement>("header, main, footer")
-        .forEach((el) => el.setAttribute("inert", ""));
-    } else {
-      body.style.overflow = "";
-      document
-        .querySelectorAll<HTMLElement>("[inert]")
-        .forEach((el) => el.removeAttribute("inert"));
-    }
-    return () => {
-      body.style.overflow = "";
-      document
-        .querySelectorAll<HTMLElement>("[inert]")
-        .forEach((el) => el.removeAttribute("inert"));
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) close();
     };
-  }, [isOpen]);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [close]);
+
+  const isActive = (href: string) =>
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname.startsWith(`${href}/`);
+
+  const itemBase = `block w-full py-4 text-left text-lg font-medium transition-colors duration-200 ${focusRing}`;
 
   return (
-    <div
-      ref={overlayRef}
-      id={id}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Navigation menu"
-      hidden={!isOpen}
-      className="fixed inset-0 z-50 flex flex-col bg-background"
-      style={{
-        // Animate in/out using @starting-style + allow-discrete (modern, no JS)
-        // Fallback: display:flex when isOpen, hidden when not
-      }}
-    >
-      {/* Header bar */}
+    <div className="md:hidden">
+      <button
+        ref={toggleRef}
+        type="button"
+        onClick={() => setOpenedOn(isOpen ? null : pathname)}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
+        aria-controls="mobile-menu"
+        className={`-mr-2 flex size-10 items-center justify-center rounded text-white/80 transition-colors duration-200 hover:text-white ${focusRing}`}
+      >
+        {isOpen ? <X size={24} /> : <List size={24} />}
+      </button>
+
+      {/* Backdrop */}
       <div
-        className="flex items-center justify-between px-[--content-padding]"
-        style={{ height: "var(--header-height)" }}
-      >
-        <Link
-          href="/"
-          onClick={onClose}
-          className="text-body-2 font-bold tracking-tight text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm"
-        >
-          Sachin<span className="text-primary">.</span>
-        </Link>
+        onClick={close}
+        aria-hidden="true"
+        className={`fixed inset-x-0 bottom-0 top-14 bg-black/50 transition-opacity duration-300 sm:top-16 ${
+          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
 
-        <button
-          ref={closeBtnRef}
-          type="button"
-          onClick={onClose}
-          aria-label="Close navigation menu"
-          className="h-10 w-10 inline-flex items-center justify-center rounded-lg text-text-primary hover:bg-ghost-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          <X size={22} weight="bold" />
-        </button>
-      </div>
-
-      {/* Nav links */}
-      <nav
-        aria-label="Mobile navigation"
-        className="flex flex-col gap-2 px-[--content-padding] pt-8"
+      {/* Panel */}
+      <div
+        id="mobile-menu"
+        data-lenis-prevent
+        className={`absolute left-0 top-full max-h-[calc(100dvh-3.5rem)] w-full overflow-y-auto border-b border-white/8 bg-background/80 backdrop-blur-md transition-all duration-300 ease-out sm:max-h-[calc(100dvh-4rem)] ${
+          isOpen
+            ? "visible translate-y-0 opacity-100"
+            : "pointer-events-none invisible -translate-y-2 opacity-0"
+        }`}
       >
-        {navLinks.map(({ href, label }) => {
-          const isActive = currentPath === href || currentPath.startsWith(href + "/");
-          return (
-            <Link
-              key={href}
-              href={href}
-              onClick={onClose}
-              aria-current={isActive ? "page" : undefined}
-              className={[
-                // Touch target ≥ 44px — min-h-[44px] gives us that
-                "min-h-[44px] flex items-center px-3 rounded-xl text-heading-h4 font-bold tracking-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                isActive
-                  ? "text-primary bg-secondary"
-                  : "text-text-primary hover:text-primary hover:bg-ghost-hover",
-              ].join(" ")}
+        <ul className="mx-auto flex max-w-[1280px] flex-col px-4 py-2 sm:px-6">
+          {navLinks.map((item) => (
+            <li
+              key={item.label}
+              className="border-b border-white/8 last:border-b-0"
             >
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
+              {item.action === "contact" ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    close();
+                    openContact();
+                  }}
+                  aria-haspopup="dialog"
+                  className={`${itemBase} text-white/70 hover:text-white`}
+                >
+                  {item.label}
+                </button>
+              ) : (
+                <Link
+                  href={item.href!}
+                  onClick={close}
+                  aria-current={isActive(item.href!) ? "page" : undefined}
+                  className={`${itemBase} ${
+                    isActive(item.href!)
+                      ? "text-[var(--highlight)]"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

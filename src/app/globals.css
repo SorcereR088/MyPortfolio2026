@@ -125,6 +125,7 @@
 
   --color-cyan: var(--cyan);
   --color-skyblue: var(--skyblue);
+  --color-highlight: var(--highlight);
 
   /* Fonts */
   --font-primary: var(--font-family-primary);
