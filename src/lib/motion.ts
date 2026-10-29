@@ -7,6 +7,45 @@ export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 /** Symmetrical ease-in-out — use for looping or reversible animations. */
 export const EASE_IN_OUT: [number, number, number, number] = [0.65, 0, 0.35, 1];
 
+
+
+// S reveal: adjust duration/delay for speed, edgeSoftness for the wipe edge,
+// and grain values for a finer or more pronounced texture.
+// S reveal: duration/delay for speed, edgeSoftness (viewBox px) for how wide the wipe fade is.
+const BRUSH_EASE: [number, number, number, number] = [0.45, 0, 0.2, 1];
+
+
+
+// S reveal (brush stroke):
+// duration/delay  – speed and start time (seconds)
+// lag             – how far the solid paint trails the dry-brush tip (seconds, bigger = longer dry tip)
+// edgeRoughness   – wobble of the stroke edge (viewBox px)
+// bristleScale    – how ragged the dry-brush tip is
+// grainFrequency  – fineness of the dry-brush speckle (higher = finer)
+export const S_REVEAL = {
+  duration: 2.4,
+  delay: 0.25,
+  ease: BRUSH_EASE,
+  lag: 0.22,
+  edgeRoughness: 22,
+  bristleScale: 40,
+  grainFrequency: 0.7,
+} as const;
+
+// S glow: radius for size, intensity for brightness (0-1), spring for cursor lag,
+// fadeIn/fadeOut (seconds) for entry and exit.
+export const S_GLOW = {
+  radius: 260,
+  intensity: 0.38,
+  spring: {
+    stiffness: 90,
+    damping: 22,
+    mass: 0.7,
+  },
+  fadeIn: 0.5,
+  fadeOut: 0.7,
+} as const;
+
 // ─── Duration presets (seconds) ────────────────────────────────────────────────
 /** Adjust per context: `fast` for micro-interactions, `base` for reveals, `slow` for hero text. */
 export const DURATION = {
@@ -113,4 +152,3 @@ export function container(
     },
   };
 }
-
